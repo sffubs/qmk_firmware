@@ -88,8 +88,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define PRODUCT Onekey Blackpill STM32F401
 
-#define MATRIX_COL_PINS {A4, A5, A6, A7, B0, B1}; // {B1, B0, A7, A6, A5, A4}
-#define MATRIX_ROW_PINS {B5, A15, B3, B4}; //, NO_PIN, NO_PIN, NO_PIN, NO_PIN}; // {A12, A15, B3, B4}
+#define MATRIX_COL_PINS {A4, A5, A6, A7, B0, B1} // {B1, B0, A7, A6, A5, A4}
+#define MATRIX_ROW_PINS {B5, A15, B3, B4} //, NO_PIN, NO_PIN, NO_PIN, NO_PIN}; // {A12, A15, B3, B4}
 #define UNUSED_PINS
 
 #define BOOTMAGIC_LITE_ROW 0

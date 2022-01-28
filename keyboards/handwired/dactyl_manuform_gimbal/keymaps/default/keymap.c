@@ -268,7 +268,7 @@ void disable_mouse_layer_right(void) {
   }
 }
 
-void oled_task_user(void) {
+bool oled_task_user(void) {
   oled_set_cursor(0, 0);
   
   oled_write_P(PSTR("Layer: "), false);
@@ -315,6 +315,8 @@ void oled_task_user(void) {
     sprintf(msg, "JS: %04d %04d", joystick_x_raw, joystick_y_raw);
     oled_write(msg, false);
   }
+
+  return false;
 }
 
 static bool layer_was_base = true;
