@@ -37,7 +37,11 @@ extern void disable_mouse_layer_right(void);
 static void read_gimbal(void);
 
 static void keyboard_sync_mouse_enabled_slave_handler(uint8_t in_buflen, const void* in_data, uint8_t out_buflen, void* out_data);
-  
+
+static void keyboard_sync_led_slave_handler(uint8_t in_buflen, const void* in_data, uint8_t out_buflen, void* out_data);
+
+static void wakeup(void);
+
 bool mouse_enabled;
 uint8_t prox_threshold;
 
@@ -65,6 +69,12 @@ typedef struct _master_to_slave_t {
 typedef struct _slave_to_master_t {
   bool mouse_enabled;
 } slave_to_master_t;
+
+// Backlight timeout feature
+#define LED_TIMEOUT 1    // in minutes
+static uint16_t idle_timer = 0;
+static uint8_t halfmin_counter = 0;
+static bool led_on = true;
 
 void board_init(void) {
     // B9 is configured as I2C1_SDA in the board file; that function must be
@@ -109,6 +119,7 @@ void keyboard_post_init_kb(void) {
     }
     
     transaction_register_rpc(KEYBOARD_SYNC_MOUSE_ENABLED, keyboard_sync_mouse_enabled_slave_handler);
+    transaction_register_rpc(KEYBOARD_SYNC_LED, keyboard_sync_led_slave_handler);
     
     keyboard_post_init_user();
 }
@@ -277,4 +288,54 @@ bool is_keyboard_master(void) {
 void keyboard_sync_mouse_enabled_slave_handler(uint8_t in_buflen, const void* in_data, uint8_t out_buflen, void* out_data) {
   slave_to_master_t *s2m = (slave_to_master_t*)out_data;
   s2m->mouse_enabled = mouse_enabled;
+}
+
+void keyboard_sync_led_slave_handler(uint8_t in_buflen, const void* in_data, uint8_t out_buflen, void* out_data) {
+  bool* led_master_on = (bool*)in_data;
+  if (*led_master_on) {
+    rgblight_enable_noeeprom();
+  } else {
+    rgblight_disable_noeeprom();
+  }
+}
+
+void matrix_scan_kb(void) {
+  // idle_timer needs to be set one time
+  if (idle_timer == 0) idle_timer = timer_read();
+
+  if (led_on) {
+    if (timer_elapsed(idle_timer) > 30000) {
+      halfmin_counter++;
+      idle_timer = timer_read();
+    }
+  
+    if (halfmin_counter >= LED_TIMEOUT * 2) {
+      rgblight_disable_noeeprom();
+      led_on = false;
+      halfmin_counter = 0;
+      transaction_rpc_exec(KEYBOARD_SYNC_LED, sizeof(led_on), &led_on, 0, NULL);
+    }
+  }
+}
+
+bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
+  if (record->event.pressed) {
+    wakeup();
+  }
+  return true;
+}
+
+layer_state_t layer_state_set_kb(layer_state_t state) {
+  wakeup();
+  return layer_state_set_user(state);
+}
+
+static void wakeup(void) {
+  if (led_on == false) {
+    rgblight_enable_noeeprom();
+    led_on = true;
+    transaction_rpc_exec(KEYBOARD_SYNC_LED, sizeof(led_on), &led_on, 0, NULL);
+  }
+  idle_timer = timer_read();
+  halfmin_counter = 0;
 }

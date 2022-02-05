@@ -167,8 +167,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SPLIT_HAND_PIN B10
 #define SPLIT_LAYER_STATE_ENABLE
 #define SPLIT_LED_STATE_ENABLE
-#define SPLIT_TRANSACTION_IDS_KB KEYBOARD_SYNC_MOUSE_ENABLED
+#define SPLIT_TRANSACTION_IDS_KB KEYBOARD_SYNC_MOUSE_ENABLED, KEYBOARD_SYNC_LED
 
 // Combos
-#define COMBO_COUNT 6
+#define COMBO_COUNT (27 + 38)
 #define EXTRA_LONG_COMBOS

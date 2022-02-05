@@ -43,7 +43,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                        KC_LALT,              KC_LGUI,                   KC_RGUI,              KC_RALT
      ),
     [_NUM] = LAYOUT(
-     KC_1,   KC_2,   KC_3,   KC_4,    KC_5,   /**/ KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_NO,
+     KC_1,   KC_2,   KC_3,   KC_4,    KC_5,   /**/ KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
      KC_F1,  KC_F2,  KC_F3,  KC_F4,   KC_F5,  /**/ KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_NO,
      KC_F11, KC_F12, KC_F13, KC_F14,  KC_F15, /**/ KC_F16,  KC_F17,  KC_F18,  KC_F11,  KC_F12,  KC_NO,
                              KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS,
@@ -59,9 +59,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      /**/                       KC_TRNS, KC_TRNS,      KC_TRNS, KC_TRNS
     ),
     [_SYMBOL] = LAYOUT(
-     KC_GRV,  KC_NO, KC_NO, KC_NO, KC_NO,     /**/ S(KC_9),    S(KC_0),    KC_NO,      KC_NO,     KC_NO,   KC_BSPC,
-     KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO,     /**/ S(KC_LBRC), S(KC_RBRC), S(KC_MINS), S(KC_EQL), KC_NO  , KC_NO,
-     KC_NUBS, KC_NO, KC_NO, KC_NO, KC_NO,     /**/ KC_LBRC,    KC_RBRC,    KC_MINS,    KC_EQL,    KC_NUHS, KC_NO,
+     KC_GRV,  KC_NO, KC_NO, KC_NO, KC_NO,     /**/ S(KC_9),    S(KC_0),    KC_NO,      KC_NO,     KC_NO,      KC_BSPC,
+     KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO,     /**/ S(KC_LBRC), S(KC_RBRC), S(KC_MINS), S(KC_EQL), S(KC_SCLN), S(KC_QUOT),
+     KC_NUBS, KC_NO, KC_NO, KC_NO, KC_NO,     /**/ KC_LBRC,    KC_RBRC,    KC_MINS,    KC_EQL,    KC_NUHS,    KC_NO,
                             KC_TRNS, KC_TRNS,      KC_TRNS,    KC_TRNS,
                             KC_TRNS, KC_TRNS,      KC_TRNS,    KC_TRNS,
                             KC_TRNS, KC_TRNS,      KC_TRNS,    KC_TRNS
@@ -114,6 +114,66 @@ const uint16_t PROGMEM combo_symbol_right[] = {KC_RGUI, KC_RALT, COMBO_END};
 const uint16_t PROGMEM combo_parens[] = {S(KC_9), S(KC_0), COMBO_END};
 const uint16_t PROGMEM combo_brackets[] = {KC_LBRC, KC_RBRC, COMBO_END};
 const uint16_t PROGMEM combo_braces[] = {S(KC_LBRC), S(KC_RBRC), COMBO_END};
+const uint16_t PROGMEM combo_1[] = {MT(MOD_LSFT, KC_A), MT(MOD_LCTL, KC_Z), COMBO_END};
+const uint16_t PROGMEM combo_2[] = {KC_S, LT(0, KC_X), COMBO_END};
+const uint16_t PROGMEM combo_3[] = {KC_D, LT(0, KC_C), COMBO_END};
+const uint16_t PROGMEM combo_4[] = {KC_F, LT(0, KC_V), COMBO_END};
+const uint16_t PROGMEM combo_5[] = {KC_G, KC_B, COMBO_END};
+const uint16_t PROGMEM combo_6[] = {KC_H, KC_N, COMBO_END};
+const uint16_t PROGMEM combo_7[] = {KC_J, KC_M, COMBO_END};
+const uint16_t PROGMEM combo_8[] = {KC_K, KC_COMM, COMBO_END};
+const uint16_t PROGMEM combo_9[] = {KC_L, KC_DOT, COMBO_END};
+const uint16_t PROGMEM combo_0[] = {KC_SCLN, KC_SLSH, COMBO_END};
+const uint16_t PROGMEM combo_S1[] = {MT(MOD_LSFT, KC_A), KC_Q, COMBO_END};
+const uint16_t PROGMEM combo_S2[] = {KC_S, LT(0, KC_W), COMBO_END};
+const uint16_t PROGMEM combo_S3[] = {KC_D, KC_E, COMBO_END};
+const uint16_t PROGMEM combo_S4[] = {KC_F, KC_R, COMBO_END};
+const uint16_t PROGMEM combo_S5[] = {KC_G, KC_T, COMBO_END};
+const uint16_t PROGMEM combo_S6[] = {KC_H, LT(0, KC_Y), COMBO_END};
+const uint16_t PROGMEM combo_S7[] = {KC_J, KC_U, COMBO_END};
+const uint16_t PROGMEM combo_S8[] = {KC_K, KC_I, COMBO_END};
+const uint16_t PROGMEM combo_S9[] = {KC_L, KC_O, COMBO_END};
+const uint16_t PROGMEM combo_S0[] = {KC_SCLN, KC_P, COMBO_END};
+const uint16_t PROGMEM combo_nav[] = {MT(MOD_LSFT, KC_A), KC_S, KC_D, KC_F, COMBO_END};
+
+const uint16_t PROGMEM eplhreu0[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_DOT, COMBO_END};
+const uint16_t PROGMEM eplhreu1[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_DOT, KC_SPC, COMBO_END};
+const uint16_t PROGMEM eplhreu2[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_DOT, KC_ESC, COMBO_END};
+const uint16_t PROGMEM eplhreu3[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_DOT, KC_SPC, KC_ESC, COMBO_END};
+const uint16_t PROGMEM eplhreu4[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_M, COMBO_END};
+const uint16_t PROGMEM eplhreu5[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_K, COMBO_END};
+const uint16_t PROGMEM eplhreu6[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_M, KC_L, KC_DOT, COMBO_END};
+const uint16_t PROGMEM eplhreu7[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_M, KC_K, KC_COMM, KC_L, COMBO_END};
+const uint16_t PROGMEM eplhreu8[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_M, KC_K, KC_COMM, KC_L, KC_ESC, COMBO_END};
+const uint16_t PROGMEM eplhreu9[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_M, KC_K, KC_COMM, KC_L, KC_SPC, KC_ESC, COMBO_END};
+const uint16_t PROGMEM eplhreu10[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_M, KC_K, KC_COMM, COMBO_END};
+const uint16_t PROGMEM eplhreu11[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_COMM, KC_DOT, COMBO_END};
+const uint16_t PROGMEM eplhreu12[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, COMBO_END};
+const uint16_t PROGMEM eplhreu13[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_K, KC_L, COMBO_END};
+const uint16_t PROGMEM eplhreu14[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_K, KC_L, KC_SPC, COMBO_END};
+const uint16_t PROGMEM eplhreu15[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_K, KC_L, KC_ESC, COMBO_END};
+const uint16_t PROGMEM eplhreu16[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_K, KC_L, KC_SPC, KC_ESC, COMBO_END};
+const uint16_t PROGMEM eplhreu17[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_M, KC_COMM, KC_DOT, COMBO_END};
+const uint16_t PROGMEM eplhreu18[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_M, KC_COMM, KC_DOT, KC_SPC, COMBO_END};
+const uint16_t PROGMEM eplhreu19[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_M, KC_COMM, KC_DOT, KC_ESC, COMBO_END};
+const uint16_t PROGMEM eplhreu20[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_M, KC_COMM, KC_DOT, KC_SPC, KC_ESC, COMBO_END};
+const uint16_t PROGMEM eplhreu21[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_L, COMBO_END};
+const uint16_t PROGMEM eplhreu22[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_DOT, COMBO_END};
+const uint16_t PROGMEM eplhreu23[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_COMM, COMBO_END};
+const uint16_t PROGMEM eplhreu24[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_K, KC_L, COMBO_END};
+const uint16_t PROGMEM eplhreu25[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_M, COMBO_END};
+const uint16_t PROGMEM eplhreu26[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_M, KC_K, COMBO_END};
+const uint16_t PROGMEM eplhreu27[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_L, KC_DOT, COMBO_END};
+const uint16_t PROGMEM eplhreu28[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_M, KC_COMM, COMBO_END};
+const uint16_t PROGMEM eplhreu29[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_K, KC_COMM, KC_L, KC_DOT, COMBO_END};
+const uint16_t PROGMEM eplhreu30[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_K, KC_COMM, COMBO_END};
+const uint16_t PROGMEM eplhreu31[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_M, KC_K, KC_COMM, KC_L, KC_DOT, COMBO_END};
+const uint16_t PROGMEM eplhreu32[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_COMM, COMBO_END};
+const uint16_t PROGMEM eplhreu33[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_M, KC_K, KC_DOT, COMBO_END};
+const uint16_t PROGMEM eplhreu34[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_COMM, KC_DOT, COMBO_END};
+const uint16_t PROGMEM eplhreu35[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_K, COMBO_END};
+const uint16_t PROGMEM eplhreu36[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_K, KC_COMM, COMBO_END};
+const uint16_t PROGMEM eplhreu37[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_K, KC_COMM, KC_DOT, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
 				   COMBO(combo_config, TG(_CONFIG)),
@@ -121,7 +181,67 @@ combo_t key_combos[COMBO_COUNT] = {
 				   COMBO(combo_symbol_right, MO(_SYMBOL)),
 				   COMBO(combo_parens, PARENS),
 				   COMBO(combo_braces, BRACES),
-				   COMBO(combo_brackets, BRACKETS)
+				   COMBO(combo_brackets, BRACKETS),
+				   COMBO(combo_1, KC_1),
+				   COMBO(combo_2, KC_2),
+				   COMBO(combo_3, KC_3),
+				   COMBO(combo_4, KC_4),
+				   COMBO(combo_5, KC_5),
+				   COMBO(combo_6, KC_6),
+				   COMBO(combo_7, KC_7),
+				   COMBO(combo_8, KC_8),
+				   COMBO(combo_9, KC_9),
+				   COMBO(combo_0, KC_0),
+				   COMBO(combo_S1, S(KC_1)),
+				   COMBO(combo_S2, S(KC_2)),
+				   COMBO(combo_S3, S(KC_3)),
+				   COMBO(combo_S4, S(KC_4)),
+				   COMBO(combo_S5, S(KC_5)),
+				   COMBO(combo_S6, S(KC_6)),
+				   COMBO(combo_S7, S(KC_7)),
+				   COMBO(combo_S8, S(KC_8)),
+				   COMBO(combo_S9, S(KC_9)),
+				   COMBO(combo_S0, S(KC_0)),
+				   COMBO(combo_nav, MO(_NAV)),
+
+    COMBO(eplhreu0, KC_TAB),
+    COMBO(eplhreu1, KC_BSPC),
+    COMBO(eplhreu2, KC_DEL),
+    COMBO(eplhreu3, KC_ESC),
+    COMBO(eplhreu4, LSFT(KC_1)),
+    COMBO(eplhreu5, LSFT(KC_2)),
+    COMBO(eplhreu6, KC_NUHS),
+    COMBO(eplhreu7, LSFT(KC_4)),
+    COMBO(eplhreu8, UC(0x20ac)),
+    COMBO(eplhreu9, UC(0xa3)),
+    COMBO(eplhreu10, LSFT(KC_5)),
+    COMBO(eplhreu11, LSFT(KC_7)),
+    COMBO(eplhreu12, KC_QUOT),
+    COMBO(eplhreu13, LSFT(KC_9)),
+    COMBO(eplhreu14, KC_LBRC),
+    COMBO(eplhreu15, LSFT(KC_COMM)),
+    COMBO(eplhreu16, LSFT(KC_LBRC)),
+    COMBO(eplhreu17, LSFT(KC_0)),
+    COMBO(eplhreu18, KC_RBRC),
+    COMBO(eplhreu19, LSFT(KC_DOT)),
+    COMBO(eplhreu20, LSFT(KC_RBRC)),
+    COMBO(eplhreu21, LSFT(KC_8)),
+    COMBO(eplhreu22, LSFT(KC_EQL)),
+    COMBO(eplhreu23, KC_COMM),
+    COMBO(eplhreu24, KC_MINS),
+    COMBO(eplhreu25, KC_DOT),
+    COMBO(eplhreu26, KC_SLASH),
+    COMBO(eplhreu27, LSFT(KC_SCLN)),
+    COMBO(eplhreu28, KC_SCLN),
+    COMBO(eplhreu29, KC_EQL),
+    COMBO(eplhreu30, LSFT(KC_SLASH)),
+    COMBO(eplhreu31, LSFT(KC_QUOT)),
+    COMBO(eplhreu32, KC_NUBS),
+    COMBO(eplhreu33, LSFT(KC_6)),
+    COMBO(eplhreu34, LSFT(KC_MINS)),
+    COMBO(eplhreu35, KC_GRAVE),
+    COMBO(eplhreu36, LSFT(KC_NUBS)),
+    COMBO(eplhreu37, LSFT(KC_NUHS)),
 };
 
 const rgblight_segment_t PROGMEM mouse_light_layer[] =
