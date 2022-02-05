@@ -456,9 +456,16 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     DRV_pulse(6); // Sharp click - 30%.
     break;
   case _MOUSE_LEFT:
+    if (is_keyboard_left()) {
+      layer_was_base = false;
+      DRV_pulse(9); // Soft bump - 30%
+    }
+    break;
   case _MOUSE_RIGHT:
-    layer_was_base = false;
-    DRV_pulse(9); // Soft bump - 30%
+    if (!is_keyboard_left()) {
+      layer_was_base = false;
+      DRV_pulse(9); // Soft bump - 30%
+    }
     break;
   }
   

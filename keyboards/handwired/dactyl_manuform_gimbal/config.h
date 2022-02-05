@@ -166,6 +166,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Split
 #define SPLIT_HAND_PIN B10
 #define SPLIT_LAYER_STATE_ENABLE
+#define SPLIT_LAYER_STATE_SET
 #define SPLIT_LED_STATE_ENABLE
 #define SPLIT_TRANSACTION_IDS_KB KEYBOARD_SYNC_MOUSE_ENABLED, KEYBOARD_SYNC_LED
 
