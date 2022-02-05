@@ -71,7 +71,7 @@ typedef struct _slave_to_master_t {
 } slave_to_master_t;
 
 // Backlight timeout feature
-#define LED_TIMEOUT 1    // in minutes
+#define LED_TIMEOUT 10    // in minutes
 static uint16_t idle_timer = 0;
 static uint8_t halfmin_counter = 0;
 static bool led_on = true;

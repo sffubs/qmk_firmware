@@ -168,6 +168,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SPLIT_LAYER_STATE_ENABLE
 #define SPLIT_LAYER_STATE_SET
 #define SPLIT_LED_STATE_ENABLE
+#define SPLIT_HAPTIC_ENABLE
 #define SPLIT_TRANSACTION_IDS_KB KEYBOARD_SYNC_MOUSE_ENABLED, KEYBOARD_SYNC_LED
 
 // Combos
