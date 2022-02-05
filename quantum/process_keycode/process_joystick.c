@@ -87,13 +87,13 @@ bool process_joystick_analogread_quantum() {
         uint16_t inputSavedState = savePinState(joystick_axes[axis_index].input_pin);
 
         // disable pull-up resistor
-        writePinLow(joystick_axes[axis_index].input_pin);
+        //writePinLow(joystick_axes[axis_index].input_pin);
 
         // if pin was a pull-up input, we need to uncharge it by turning it low
         // before making it a low input
-        setPinOutput(joystick_axes[axis_index].input_pin);
+        //setPinOutput(joystick_axes[axis_index].input_pin);
 
-        wait_us(10);
+        //wait_us(10);
 
         // save and apply output pin status
         uint16_t outputSavedState = 0;
@@ -114,11 +114,11 @@ bool process_joystick_analogread_quantum() {
             writePinLow(joystick_axes[axis_index].ground_pin);
         }
 
-        wait_us(10);
+        //wait_us(10);
 
-        setPinInput(joystick_axes[axis_index].input_pin);
+        //setPinInput(joystick_axes[axis_index].input_pin);
 
-        wait_us(10);
+        //wait_us(10);
 
 #    if defined(__AVR__) || defined(PROTOCOL_CHIBIOS)
         int16_t axis_val = analogReadPin(joystick_axes[axis_index].input_pin);
