@@ -322,7 +322,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
     wakeup();
   }
-  return true;
+  return process_record_user(keycode, record);
 }
 
 layer_state_t layer_state_set_kb(layer_state_t state) {
