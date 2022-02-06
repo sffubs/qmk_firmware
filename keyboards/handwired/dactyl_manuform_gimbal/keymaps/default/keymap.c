@@ -135,6 +135,9 @@ const uint16_t PROGMEM combo_S8[] = {KC_K, KC_I, COMBO_END};
 const uint16_t PROGMEM combo_S9[] = {KC_L, KC_O, COMBO_END};
 const uint16_t PROGMEM combo_S0[] = {KC_SCLN, KC_P, COMBO_END};
 const uint16_t PROGMEM combo_nav[] = {MT(MOD_LSFT, KC_A), KC_S, KC_D, KC_F, COMBO_END};
+const uint16_t PROGMEM combo_underscore[] = {KC_COMM, KC_DOT, COMBO_END};
+const uint16_t PROGMEM combo_minus[] = {KC_K, KC_L, COMBO_END};
+const uint16_t PROGMEM combo_backslash[] = {KC_J, KC_COMM, COMBO_END};
 
 const uint16_t PROGMEM eplhreu0[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_DOT, COMBO_END};
 const uint16_t PROGMEM eplhreu1[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_DOT, KC_SPC, COMBO_END};
@@ -203,6 +206,9 @@ combo_t key_combos[COMBO_COUNT] = {
 				   COMBO(combo_S9, S(KC_9)),
 				   COMBO(combo_S0, S(KC_0)),
 				   COMBO(combo_nav, MO(_NAV)),
+				   COMBO(combo_minus, KC_MINS),
+				   COMBO(combo_underscore, LSFT(KC_MINS)),
+				   COMBO(combo_backslash, KC_NUBS),
 
     COMBO(eplhreu0, KC_TAB),
     COMBO(eplhreu1, KC_BSPC),
@@ -272,8 +278,8 @@ bool get_haptic_enabled_key(uint16_t keycode, keyrecord_t *record) {
   return false;
 }
   
-    static void hold_haptic(void) {
-      DRV_pulse(6); // Sharp click - 30%.
+static void hold_haptic(void) {
+  DRV_pulse(6); // Sharp click - 30%.
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {

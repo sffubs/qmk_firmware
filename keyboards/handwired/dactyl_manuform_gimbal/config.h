@@ -172,5 +172,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SPLIT_TRANSACTION_IDS_KB KEYBOARD_SYNC_MOUSE_ENABLED, KEYBOARD_SYNC_LED
 
 // Combos
-#define COMBO_COUNT (27 + 38)
+#define COMBO_COUNT (30 + 38)
 #define EXTRA_LONG_COMBOS
