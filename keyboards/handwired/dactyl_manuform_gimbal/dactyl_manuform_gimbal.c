@@ -63,12 +63,40 @@ static int joystick_y;
 uint16_t joystick_x_raw;
 uint16_t joystick_y_raw;
 
+static bool scroll_left;
+static bool scroll_right;
+
 typedef struct _master_to_slave_t {
+  bool scroll_right;
 } master_to_slave_t;
 
 typedef struct _slave_to_master_t {
   bool mouse_enabled;
 } slave_to_master_t;
+
+static void send_scroll(void) {
+  master_to_slave_t m2s = {scroll_right};
+  slave_to_master_t s2m = {0};
+  transaction_rpc_exec(KEYBOARD_SYNC_MOUSE_ENABLED, sizeof(m2s), &m2s, sizeof(s2m), &s2m);
+}
+
+void enable_scroll_right(void) {
+  scroll_right = true;
+  send_scroll();
+}
+
+void disable_scroll_right(void) {
+  scroll_right = false;
+  send_scroll();
+}
+
+void enable_scroll_left(void) {
+  scroll_left = true;
+}
+
+void disable_scroll_left(void) {
+  scroll_left = false;
+}
 
 // Backlight timeout feature
 #define LED_TIMEOUT 10    // in minutes
@@ -125,6 +153,7 @@ void keyboard_post_init_kb(void) {
 }
 
 int rate_curve(double input);
+int rate_curve_scroll(double input);
 double gimbal_calibrate(int input, int axis);
 
 #if 0
@@ -156,9 +185,14 @@ joystick_config_t joystick_axes[JOYSTICK_AXES_COUNT] = {
 static void read_gimbal(void) {
   joystick_x_raw = analogReadPin(A2);
   joystick_y_raw = analogReadPin(A1);
-  joystick_x = rate_curve(gimbal_calibrate(joystick_x_raw, 0));
-  joystick_y = rate_curve(gimbal_calibrate(joystick_y_raw, 1));
-
+  //if ((is_keyboard_left() && scroll_left) || (!is_keyboard_left() && scroll_right)) {
+  //  joystick_x = rate_curve_scroll(gimbal_calibrate(joystick_x_raw, 0));
+  //  joystick_y = rate_curve_scroll(gimbal_calibrate(joystick_y_raw, 1));
+  //} else {
+    joystick_x = rate_curve(gimbal_calibrate(joystick_x_raw, 0));
+    joystick_y = rate_curve(gimbal_calibrate(joystick_y_raw, 1));
+    //}
+    
   if (!is_keyboard_left()) {
     joystick_x *= -1;
     joystick_y *= -1;
@@ -191,6 +225,10 @@ int rate_curve(double input) {
   return (int)(x * rate + pow(x * rate, 3) * super);
 }
 
+int rate_curve_scroll(double input) {
+  return (int)(input * 64);
+}
+
 /*
 static int limit(int val, int limit) {
   if (abs(val) > limit) {
@@ -203,16 +241,37 @@ static int limit(int val, int limit) {
 
 void pointing_device_task(void) {
   static uint32_t last_report = 0u;
+  static uint32_t last_report_scroll = 0u;
   if (timer_elapsed32(last_report) > 10) {
     last_report = timer_read32();
 
     report_mouse_t currentReport = pointing_device_get_report();
-    
-    currentReport.x = joystick_x;
-    currentReport.y = joystick_y;
-    
-    pointing_device_set_report(currentReport);
-    pointing_device_send();
+
+    if (led_on || abs(joystick_x) > 20 || abs(joystick_y) > 20) {
+      if (!led_on) {
+	wakeup();
+      }
+      if ((is_keyboard_left() && scroll_left) || (!is_keyboard_left() && scroll_right)) {
+	if (timer_elapsed32(last_report_scroll) > 100) {
+	  last_report_scroll = timer_read32();
+	  currentReport.h = joystick_x / 2;
+	  currentReport.v = -joystick_y / 2;
+	  currentReport.x = 0;
+	  currentReport.y = 0;
+
+	  pointing_device_set_report(currentReport);
+	  pointing_device_send();
+	}
+      } else {
+	currentReport.x = joystick_x;
+	currentReport.y = joystick_y;
+	currentReport.h = 0;
+	currentReport.v = 0;
+	
+	pointing_device_set_report(currentReport);
+	pointing_device_send();
+      }
+    }
   }
 }
 
@@ -228,37 +287,39 @@ void housekeeping_task_kb(void) {
     last_measurement = timer_read32();
     
     read_gimbal();
-    
-    uint8_t prox;
-    adps9660_proximity(&prox);
 
-    //uprintf("Proximity: %d (%d)\n", prox, prox_threshold);
-    
-    if (prox > prox_threshold || joystick_x != 0 || joystick_y != 0) {
-      if (prev_prox_state == 0) {
-	measurement_interval = 10;
-	prev_prox_state = 1;
-	prev_prox_time = timer_read32();
-      } else if (timer_elapsed32(prev_prox_time) > 200) {
-	measurement_interval = 100;
-	if (is_keyboard_left()) {
-	  enable_mouse_layer_left();
-	} else {
-	  mouse_enabled = true;
+    if (led_on) {
+      uint8_t prox;
+      adps9660_proximity(&prox);
+
+      //uprintf("Proximity: %d (%d)\n", prox, prox_threshold);
+
+      if (prox > prox_threshold || joystick_x != 0 || joystick_y != 0) {
+	if (prev_prox_state == 0) {
+	  measurement_interval = 10;
+	  prev_prox_state = 1;
+	  prev_prox_time = timer_read32();
+	} else if (timer_elapsed32(prev_prox_time) > 200) {
+	  measurement_interval = 100;
+	  if (is_keyboard_left()) {
+	    enable_mouse_layer_left();
+	  } else {
+	    mouse_enabled = true;
+	  }
 	}
       }
-    }
-    else {
-      if (prev_prox_state == 1) {
-	measurement_interval = 10;
-	prev_prox_state = 0;
-	prev_prox_time = timer_read32();
-      } else if (timer_elapsed32(prev_prox_time) > 200) {
-	measurement_interval = 100;
-	if (is_keyboard_left()) {
-	  disable_mouse_layer_left();
-	} else {
-	  mouse_enabled = false;
+      else {
+	if (prev_prox_state == 1) {
+	  measurement_interval = 10;
+	  prev_prox_state = 0;
+	  prev_prox_time = timer_read32();
+	} else if (timer_elapsed32(prev_prox_time) > 200) {
+	  measurement_interval = 100;
+	  if (is_keyboard_left()) {
+	    disable_mouse_layer_left();
+	  } else {
+	    mouse_enabled = false;
+	  }
 	}
       }
     }
@@ -267,7 +328,7 @@ void housekeeping_task_kb(void) {
   if (is_keyboard_master()) {
     static uint32_t last_sync = 0;
     if (timer_elapsed32(last_sync) > 100) {
-      master_to_slave_t m2s = {};
+      master_to_slave_t m2s = {scroll_right};
       slave_to_master_t s2m = {0};
       if (transaction_rpc_exec(KEYBOARD_SYNC_MOUSE_ENABLED, sizeof(m2s), &m2s, sizeof(s2m), &s2m)) {
 	last_sync = timer_read32();
@@ -286,6 +347,8 @@ bool is_keyboard_master(void) {
 }
 
 void keyboard_sync_mouse_enabled_slave_handler(uint8_t in_buflen, const void* in_data, uint8_t out_buflen, void* out_data) {
+  master_to_slave_t *m2s = (master_to_slave_t*)in_data;
+  scroll_right = m2s->scroll_right;
   slave_to_master_t *s2m = (slave_to_master_t*)out_data;
   s2m->mouse_enabled = mouse_enabled;
 }
@@ -293,8 +356,12 @@ void keyboard_sync_mouse_enabled_slave_handler(uint8_t in_buflen, const void* in
 void keyboard_sync_led_slave_handler(uint8_t in_buflen, const void* in_data, uint8_t out_buflen, void* out_data) {
   bool* led_master_on = (bool*)in_data;
   if (*led_master_on) {
+    led_on = true;
+    adps9660_wake();
     rgblight_enable_noeeprom();
   } else {
+    led_on = false;
+    adps9660_sleep();
     rgblight_disable_noeeprom();
   }
 }
@@ -312,6 +379,7 @@ void matrix_scan_kb(void) {
     if (halfmin_counter >= LED_TIMEOUT * 2) {
       rgblight_disable_noeeprom();
       led_on = false;
+      adps9660_sleep();
       halfmin_counter = 0;
       transaction_rpc_exec(KEYBOARD_SYNC_LED, sizeof(led_on), &led_on, 0, NULL);
     }
@@ -334,6 +402,7 @@ static void wakeup(void) {
   if (led_on == false) {
     rgblight_enable_noeeprom();
     led_on = true;
+    adps9660_wake();
     transaction_rpc_exec(KEYBOARD_SYNC_LED, sizeof(led_on), &led_on, 0, NULL);
   }
   idle_timer = timer_read();

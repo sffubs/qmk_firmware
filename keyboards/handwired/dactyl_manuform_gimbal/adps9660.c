@@ -71,3 +71,37 @@ int adps9660_proximity(uint8_t *data) {
 
   return 0;
 }
+
+int adps9660_sleep(void) {
+  i2c_status_t stat;
+
+  uint8_t data;
+  
+  stat = i2c_readReg(ADPS9660_ADDRESS, ADPS9660_REG_ENABLE, &data, 1, ADPS9660_TIMEOUT);
+  
+  data &= (~ADPS9660_REG_ENABLE_PON);
+
+  stat = i2c_writeReg(ADPS9660_ADDRESS, ADPS9660_REG_ENABLE, &data, 1, ADPS9660_TIMEOUT);
+  if (stat) {
+    return stat;
+  }
+  
+  return 0;
+}
+
+int adps9660_wake(void) {
+  i2c_status_t stat;
+
+  uint8_t data;
+  
+  stat = i2c_readReg(ADPS9660_ADDRESS, ADPS9660_REG_ENABLE, &data, 1, ADPS9660_TIMEOUT);
+  
+  data |= ADPS9660_REG_ENABLE_PON;
+
+  stat = i2c_writeReg(ADPS9660_ADDRESS, ADPS9660_REG_ENABLE, &data, 1, ADPS9660_TIMEOUT);
+  if (stat) {
+    return stat;
+  }
+  
+  return 0;
+}

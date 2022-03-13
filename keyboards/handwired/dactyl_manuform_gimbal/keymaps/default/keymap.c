@@ -4,8 +4,12 @@
 
 extern uint16_t joystick_x_raw;
 extern uint16_t joystick_y_raw;
+extern void enable_scroll_left(void);
+extern void disable_scroll_left(void);
+extern void enable_scroll_right(void);
+extern void disable_scroll_right(void);
 
-// Defines names for use in layer keycodes and the keymap
+// DEFINES names for use in layer keycodes and the keymap
 enum layer_names {
     _BASE,
     _NUM,
@@ -28,7 +32,8 @@ enum custom_keycodes {
     PL_LCTL, PL_LALT, PL_LGUI,
     PL_RCTL, PL_RALT, PL_RGUI,
     MS_SCR,
-    PARENS, BRACES, BRACKETS
+    PARENS, BRACES, BRACKETS,
+    SCROLL_LEFT, SCROLL_RIGHT
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -67,20 +72,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                             KC_TRNS, KC_TRNS,      KC_TRNS,    KC_TRNS
 		       ),
     [_MOUSE_LEFT] = LAYOUT(
-     KC_NO, KC_WH_U, MS_SCR,  KC_BTN2, KC_BTN1, /**/ KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-     KC_NO, KC_WH_D, KC_MS_U, KC_BTN3, KC_BTN1, /**/ KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-     KC_NO, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN2, /**/ KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                              KC_TRNS, KC_LSFT,      KC_TRNS, KC_TRNS,
-                              KC_LCTL, KC_TRNS,      KC_TRNS, KC_TRNS,
-                              KC_LALT, KC_TRNS,      KC_TRNS, KC_TRNS
+     KC_NO, KC_WH_U, MS_SCR,  KC_BTN2, KC_BTN1,     /**/ KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+     KC_NO, KC_WH_D, KC_MS_U, KC_BTN3, SCROLL_LEFT, /**/ KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+     KC_NO, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN2,     /**/ KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+                              KC_TRNS, KC_LSFT,          KC_TRNS, KC_TRNS,
+                              KC_LCTL, KC_TRNS,          KC_TRNS, KC_TRNS,
+                              KC_LALT, KC_TRNS,          KC_TRNS, KC_TRNS
     ),
     [_MOUSE_RIGHT] = LAYOUT(
-     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, /**/ KC_BTN1, KC_BTN2, KC_NO,   KC_WH_U,   KC_NO,   KC_NO,
-     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, /**/ KC_BTN1, KC_BTN3, KC_MS_U, KC_WH_D,   KC_NO,   KC_NO,
-     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, /**/ KC_BTN2, KC_MS_L, KC_MS_D, KC_MS_R,   KC_NO,   KC_NO,
-                                KC_TRNS, KC_TRNS,      KC_TRNS, KC_TRNS,
-                                KC_TRNS, KC_TRNS,      KC_TRNS, KC_TRNS,
-                                KC_TRNS, KC_TRNS,      KC_TRNS, KC_TRNS
+     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, /**/ KC_BTN1,      KC_BTN2, KC_NO,   KC_WH_U,   KC_NO,   KC_NO,
+     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, /**/ SCROLL_RIGHT, KC_BTN3, KC_MS_U, KC_WH_D,   KC_NO,   KC_NO,
+     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, /**/ KC_BTN2,      KC_MS_L, KC_MS_D, KC_MS_R,   KC_NO,   KC_NO,
+                                KC_TRNS, KC_TRNS,      KC_TRNS,      KC_TRNS,
+                                KC_TRNS, KC_TRNS,      KC_TRNS,      KC_TRNS,
+                                KC_TRNS, KC_TRNS,      KC_TRNS,      KC_TRNS
     ),
     [_PLOVER] = LAYOUT(
      PL_1,  PL_2,  PL_3,  PL_4,    PL_5,    /**/ KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_NO,
@@ -138,6 +143,14 @@ const uint16_t PROGMEM combo_nav[] = {MT(MOD_LSFT, KC_A), KC_S, KC_D, KC_F, COMB
 const uint16_t PROGMEM combo_underscore[] = {KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM combo_minus[] = {KC_K, KC_L, COMBO_END};
 const uint16_t PROGMEM combo_backslash[] = {KC_J, KC_COMM, COMBO_END};
+const uint16_t PROGMEM combo_slash[] = {KC_M, KC_K, COMBO_END};
+const uint16_t PROGMEM combo_parens2[] = {LT(0, KC_Y), KC_U, COMBO_END};
+const uint16_t PROGMEM combo_brackets2[] = {KC_N, KC_M, COMBO_END};
+const uint16_t PROGMEM combo_braces2[] = {KC_H, KC_J, COMBO_END};
+const uint16_t PROGMEM combo_equals[] = {KC_K, KC_COMM, KC_L, KC_DOT, COMBO_END};
+const uint16_t PROGMEM combo_tilde[] = {KC_J, KC_K, KC_COMM, KC_DOT, COMBO_END};
+const uint16_t PROGMEM combo_tab[] = {KC_J, KC_DOT, COMBO_END};
+const uint16_t PROGMEM combo_hash[] = {KC_J, KC_M, KC_L, KC_DOT, COMBO_END};
 
 const uint16_t PROGMEM eplhreu0[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_DOT, COMBO_END};
 const uint16_t PROGMEM eplhreu1[] = {MT(MOD_LCTL, KC_Z), LT(0, KC_X), LT(0, KC_C), KC_F, KC_J, KC_DOT, KC_SPC, COMBO_END};
@@ -209,6 +222,14 @@ combo_t key_combos[COMBO_COUNT] = {
 				   COMBO(combo_minus, KC_MINS),
 				   COMBO(combo_underscore, LSFT(KC_MINS)),
 				   COMBO(combo_backslash, KC_NUBS),
+				   COMBO(combo_slash, KC_SLSH),
+				   COMBO(combo_parens2, PARENS),
+				   COMBO(combo_brackets2, BRACKETS),
+				   COMBO(combo_braces2, BRACES),
+				   COMBO(combo_equals, KC_EQL),
+				   COMBO(combo_tilde, S(KC_NUHS)),
+				   COMBO(combo_tab, KC_TAB),
+				   COMBO(combo_hash, KC_NUHS),
 
     COMBO(eplhreu0, KC_TAB),
     COMBO(eplhreu1, KC_BSPC),
@@ -262,6 +283,11 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
   case MT(MOD_LSFT, KC_A):
   case MT(MOD_LCTL, KC_Z):
+  case LT(0, KC_X):
+  case LT(0, KC_C):
+  case LT(0, KC_V):
+  case LT(0, KC_Y):
+  case LT(0, KC_W):
     return 200;
   default:
     return TAPPING_TERM;
@@ -365,6 +391,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     } else {
       // when keycode QMKURL is released
     }
+    break;
+  case SCROLL_LEFT:
+    if (record->event.pressed) {
+      enable_scroll_left();
+    } else {
+      disable_scroll_left();
+    }
+    break;
+  case SCROLL_RIGHT:
+    if (record->event.pressed) {
+      enable_scroll_right();
+    } else {
+      disable_scroll_right();
+    }
+    break;
     break;
   }
   return true;
