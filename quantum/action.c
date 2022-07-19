@@ -1044,8 +1044,9 @@ void clear_keyboard_but_mods_and_keys() {
     clear_macro_mods();
     send_keyboard_report();
 #ifdef MOUSEKEY_ENABLE
-    mousekey_clear();
-    mousekey_send();
+    // This might be preventing my PC from sleeping.
+    //mousekey_clear();
+    //mousekey_send();
 #endif
 #ifdef PROGRAMMABLE_BUTTON_ENABLE
     programmable_button_clear();
